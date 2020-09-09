@@ -145,7 +145,7 @@ spec:
                 configMapKeyRef:
                   key: AZURE_STORAGE_CONNECTION_STRING_SECRET_NAME
                   name: env
-          image: azsdkdemojongdevacr.azurecr.io/azsdkdemonetapi:1.0.0
+          image: kaolsze3acr.azurecr.io/azsdkdemonetapi:1.0.0
           imagePullPolicy: "IfNotPresent"
           name: azsdkdemonetapi
           ports:
