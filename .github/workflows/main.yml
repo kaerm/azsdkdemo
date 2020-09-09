@@ -1,0 +1,36 @@
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+   
+    - uses: azure/docker-login@v1
+      with:
+        login-server: kaolsze3acr.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+        email: ${{ secrets.REGISTRY_EMAIL }}
+   
+    - run: |
+        docker build -f ./src/net/WebApp/Dockerfile -t kaolsze3acr.azurecr.io/azsdkdemonetwebapp:1.0.0:${{ github.sha }} ./src/
+        docker push kaolsze3acr.azurecr.io/azsdkdemonetwebapp:1.0.0:${{ github.sha }}
+     
+    # Set the target AKS cluster.
+    - uses: azure/k8s-actions/aks-set-context@master
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: kaolsze3aks
+        resource-group: kaolsze3rg
+
+    - uses: azure/k8s-actions/k8s-deploy@master
+      with:
+        namespace: 'katetest'
+        manifests: |
+          ./pac/net/k8s/azsdkdemonetwebapp-service.yaml
+          ./pac/net/k8s/azsdkdemonetwebapp-deployment.yaml
+        images: |
+          kaolsze3acr.azurecr.io/azsdkdemonetwebapp:1.0.0:${{ github.sha }}
+#        imagepullsecrets: |
+#          demo-secret
