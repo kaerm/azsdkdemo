@@ -52,7 +52,7 @@ else
                             <p class="card-text">@image.Text</p>
                             <p class="card-text">@image.Status</p>
                             <div class="text-right">
-                                <button type="submit" value="submit" disabled="@(!IsConnected)" class="btn" @onclick="@(async () => await DeleteImage(image.Id))"><span style="font-size: 12px" class="oi oi-trash" title="Delete Meme" aria-hidden="true"></span></button>
+                                <button type="submit" value="submit" disabled="@(!IsConnected)" class="btn" @onclick="@(async () => await DeleteImage(image.Id))"><span style="font-size: 30px" class="oi oi-trash" title="Delete Meme" aria-hidden="true"></span></button>
                             </div>
                         </div>
                     </div>
